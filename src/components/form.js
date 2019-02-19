@@ -25,13 +25,17 @@ class Form extends Component {
 	}
 
 	handleChange = e => {
-		this.setState({ [e.target.name]: e.target.value });
+		this.setState({
+			[e.target.name]: e.target.value.slice(0, 1).toUpperCase() + e.target.value.slice(1, e.target.value.length)
+		});
 	};
 
 	handleEditNumber = text => {
 		const numbersArray = [...this.state.numbers];
 		const index = numbersArray.findIndex(number => number === text);
 		numbersArray.splice(index, 1, text);
+		const validate = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/.test(text);
+		validate ? this.setState({ numbers: numbersArray, addNumber: false }) : alert('enter valid phone number');
 		this.setState({ numbers: numbersArray, addNumber: false });
 	};
 
@@ -41,7 +45,10 @@ class Form extends Component {
 
 	handleSaveNumber = e => {
 		const { number, numbers } = this.state;
-		this.setState({ numbers: [...numbers, number], number: '', addNumber: false });
+		const validate = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/.test(number);
+		validate
+			? this.setState({ numbers: [...numbers, number], newPhone: '', addNumber: false })
+			: alert('please enter valid number');
 	};
 
 	handleAddNumberState = e => {
@@ -79,38 +86,69 @@ class Form extends Component {
 
 	render() {
 		const { firstName, lastName, numbers, addNumber } = this.state;
+		const fields = [
+			{
+				value: firstName,
+				id: 'firstName',
+				name: 'firstName',
+				label: 'First Name',
+				placeholder: 'FirstName'
+			},
+			{
+				value: lastName,
+				id: 'lastName',
+				name: 'lastName',
+				label: 'Last Name',
+				placeholder: 'LastName'
+			}
+		];
 		return (
-			<form onSubmit={this.handleSaveContact}>
-				<div className="firstName">
-					<input name="firstName" type="text" value={firstName} onChange={this.handleChange} />
-				</div>
-				<div className="lastName">
-					<input name="lastName" type="text" value={lastName} onChange={this.handleChange} />
-				</div>
-				{numbers.map((number, index) => {
+			<form onSubmit={this.handleSaveContact} className="form">
+				{fields.map((field, index) => {
 					return (
-						<div key={number} className="phoneNumber">
-							{console.log(number)}
-
-							<EditableLabel
-								text={number}
-								labelClassName="myLabelClass"
-								inputClassName="myInputClass"
-								inputWidth="200px"
-								inputHeight="25px"
-								inputMaxLength="50"
-								labelFontWeight="bold"
-								inputFontWeight="bold"
-								onFocusOut={this.handleEditNumber}
-							/>
-							<button type="button" id={number} onClick={this.handleDeleteNumber}>
-								Delete
-							</button>
+						<div key={index} className="form-group name">
+							<label className="col-6 col-md-4" htmlFor={field.label}>
+								{field.label}
+							</label>
+							<input
+								type="text"
+								className="col-12 col-sm-6 col-md-8"
+								value={field.value}
+								id={field.id}
+								required
+								name={field.name}
+								placeholder={field.placeholder}
+								onChange={this.handleChange}
+							/>{' '}
 						</div>
 					);
 				})}
+
+				<div className="form-group numbers">
+					<label className="col-6 col-md-8 ">Phone Number</label>
+					{numbers.map((number, index) => {
+						return (
+							<div key={number} className="phoneNumber">
+								<EditableLabel
+									text={number}
+									labelClassName="myLabelClass"
+									inputClassName="myInputClass"
+									inputWidth="200px"
+									inputHeight="25px"
+									inputMaxLength="50"
+									labelFontWeight="bold"
+									inputFontWeight="bold"
+									onFocusOut={this.handleEditNumber}
+								/>
+								<button type="button" id={number} onClick={this.handleDeleteNumber}>
+									X
+								</button>
+							</div>
+						);
+					})}
+				</div>
 				{addNumber && (
-					<div>
+					<div className="newNumbers">
 						<input name="numbers" type="text" onChange={this.handleNumber} validate={this.handleValidate} />
 						<button type="button" onClick={this.handleSaveNumber}>
 							Save
@@ -120,16 +158,24 @@ class Form extends Component {
 						</button>
 					</div>
 				)}
-				<button onClick={this.handleAddNumberState}>Add Number</button>
-
-				{/* type submit is default */}
-				<button type="submit">Save</button>
-				<button type="button" onClick={this.handleDeleteContact}>
-					DeleteContact
+				<button onClick={this.handleAddNumberState} className="btn btn-dark add" title="Add Number">
+					<i className="fa fa-plus" aria-hidden="true" />
 				</button>
-				{/* <button type="button" onClick={this.onCancel}>
-					Cancel
-				</button> */}
+				<div className="btngrp">
+					<button className="btn btn-link float-right" type="submit" title="Savew Contact">
+						<i className="fa fa-save" aria-hidden="true" />
+					</button>
+					{this.props.action === 'edit' && (
+						<button
+							type="button"
+							className="btn btn-link float-left"
+							title="DeleteContact"
+							onClick={this.handleDeleteContact}
+						>
+							<i className="fa fa-trash" aria-hidden="true" />
+						</button>
+					)}
+				</div>
 			</form>
 		);
 	}

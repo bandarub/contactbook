@@ -1,33 +1,77 @@
 .App {
-  text-align: center;
+	width: 60%;
+	margin: 0 auto;
+	text-align: center;
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.addContact {
+	color: #ccc;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.addContact:hover {
+	color: #fff;
 }
-
-.App-link {
-  color: #61dafb;
+.alphaNavContainer {
+	width: inherit;
+	margin: 2vw auto;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.alphaNav {
+	padding: 1.25%;
+}
+.sortBtn {
+	width: inherit;
+	text-align: right;
+}
+.sortDescrp {
+	text-align: left;
+	margin-left: 5vw;
+}
+.homeGrpKey {
+	width: 10%;
+}
+.list {
+	width: 80%;
+	margin: 0 auto;
+}
+.name {
+	width: 80%;
+	margin: 2vw auto;
+}
+.name label {
+	align-self: center;
+}
+.numbers label {
+	text-align: left;
+}
+.phoneNumber {
+	width: 60%;
+	margin: 0 auto;
+	margin-top: 2vw;
+	display: grid;
+	grid-template-columns: 50% 50%;
+	margin-left: 19vw;
+}
+.phoneNumber button {
+	justify-self: start;
+	align-self: flex-start;
+	border: none;
+	background-color: white;
+	font-weight: bolder;
+}
+.newNumbers {
+	width: 50%;
+	margin: 2vw auto;
+	margin-left: 23vw;
+	display: grid;
+	grid-template-columns: 60% 20% 20%;
+	grid-gap: 1vw;
+}
+.add {
+	margin-top: 2vw;
+}
+.btngrp button {
+	padding: 20px;
+	margin: 1vw;
+}
+.btngrp i {
+	font-size: 1.75vw;
+	color: black;
 }

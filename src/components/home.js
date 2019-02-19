@@ -5,6 +5,8 @@ import sortFunction from '../functions/sortFunction';
 import reduceFunction from '../functions/reduceFunction';
 import printAlphabets from '../functions/printingAlpabets';
 
+import AlphaNav from './aplphaNav';
+
 class Home extends Component {
 	state = {
 		groupedList: [],
@@ -15,7 +17,7 @@ class Home extends Component {
 	componentDidMount = async () => {
 		const { contacts } = this.props;
 		let sortedData = sortFunction(contacts, this.state.sortaction);
-        let groupedContacts = reduceFunction(sortedData, null);
+		let groupedContacts = reduceFunction(sortedData, null);
 		this.setState({ loaded: true, groupedList: groupedContacts, sortaction: 'lastName' });
 	};
 
@@ -46,24 +48,19 @@ class Home extends Component {
 			);
 		return (
 			<div>
-                <NavLink to ="/newcontact">AddContact</NavLink>
-				<div className="alphaNavBar">
-					{array.map(char => (
-						<a key={char} className="homeAlpha" href={`#${char}`}>
-							{char}
-						</a>
-					))}
-				</div>
-				<div className="homeBody">
-					<div className="homeSort">
+				<ul className="nav alphaNavContainer">{array.map(char => <AlphaNav char={char} />)}</ul>
+				<div className="home">
+					<div className="sortBtn">
 						<button onClick={() => this.sortBy(sortaction)} className="btn btn-dark">
 							Sort by {sortaction}
 						</button>
 					</div>
-					<p>Contacts lists sorted by {sortaction === 'lastName' ? 'firstName' : 'lastName'}</p>
+					<p className="sortDescrp">
+						Contacts lists sorted by {sortaction === 'lastName' ? 'firstName' : 'lastName'}
+					</p>
 					{Object.entries(groupedList).map(([key, value], i) => {
 						return (
-							<div key={key} className="list-group">
+							<div key={key} className="list-group list">
 								<p className="list-group-item-dark list-group-item-action active homeGrpKey" id={key}>
 									{key}{' '}
 								</p>
