@@ -1,28 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { connect } from 'react-redux';
+
+import Routing from './components/routes';
+
+import './styles/App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+
+	getSelectedContact = (id) => {
+		const { contacts } = this.props;
+		let foundContact;
+		for (let contact of contacts) {
+			if (contact.id === id) {
+				foundContact = contact;
+			}
+		}
+		console.log(foundContact)
+		return foundContact;
+	}
+	render() {
+		const { contacts } = this.props;
+		return (
+			<div className="App">
+				<Routing contacts={contacts} getSelectedContact={this.getSelectedContact} />
+			</div>
+		);
+	}
 }
 
-export default App;
+const mapStateToProps = state => {
+	return {
+		contacts: state
+	};
+};
+
+export default connect(mapStateToProps, null)(App);
